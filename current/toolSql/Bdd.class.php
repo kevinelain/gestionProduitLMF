@@ -5,22 +5,26 @@
  * Si vous le renommez, pensez aussi à changer son appelle dans `index.php`
  */
 	/**
-	 * class de gestion PDO simplifiee
+	 * class de gestion PDO simplifiée
 	 *
 	 * - method query() :
+	 * ```php
 	 * 		array|object = query(string $sql[, array $arg[, bool $mono_line]])
+	 * ```
 	 *
 	 * lance une recherche qui attend un ou plusieurs resultats
 	 * (retour en **objet** ou **array d'objet**)
 	 *
 	 * - method exec() :
-	 * 		int = exec(string $sql[, array $arg])
+	 * ```php
+	 * 		integer = exec(string $sql[, array $arg])
+	 * ```
 	 *
-	 * execute une commande et retourne le **nombre de lignes** affectees
+	 * execute une commande et retourne le **nombre de lignes** affectées
 	 *
 	 * @global boolean SINGLE_RES
 	 * @author Benoit <benoitelie1@gmail.com>
-	 * @version v.4.0.2
+	 * @version v.4.0.3
 	 * @link https://github.com/blag001/class_easy_pdo depot GitHub
 	 */
 class Bdd
@@ -51,7 +55,6 @@ class Bdd
 		 * cree une instance PDO avec les valeurs en argument
 		 *
 		 * @api
-		 *
 		 * @param string $host l'host a utiliser (localhost par defaut)
 		 * @param string $db_name nom de la base de donnee
 		 * @param string $user utilisateur de la BDD
@@ -86,7 +89,7 @@ class Bdd
 		return array('host', 'db_name', 'user', 'mdp', 'production');
 	}
 
-		/** reconnect à la BDD au chargement de la page */
+		/** reconnection à la BDD au chargement de la page */
 	public function __wakeup()
 	{
 		$this->_connexion();
@@ -97,7 +100,7 @@ class Bdd
 	//////////////
 
 		/**
-		 * cree une instance PDO
+		 * crée une instance PDO
 		 *
 		 * Active :
 		 * - le mode de recherche en retour d'OBJET
@@ -138,7 +141,7 @@ class Bdd
 				// si on est en production, on ne met pas de detail
 			if($this->production)
 				echo 'ERREUR : Merci de contacter le Webmaster.';
-				// sinon les info de debugage
+				// sinon les infos de debugage
 			else{
 				echo '<h1 style="color:#a33">ERROR SQL WITH PDO</h1>'."\n";
 				echo '<strong>'.$e->getMessage().'</strong><br />'."\n";
@@ -166,8 +169,10 @@ class Bdd
 		 *
 		 * On lui donne en 2nd parametre les arguments dans un tableau (aussi nommé array).
 		 * L'array doit etre associatif `marqueur => valeur`
-		 * 		ex : 'array('mon_marqueur' => $maVariable)'
-		 * 		ex : 'array('marqueur1' => $var1, 'marqueur2'=> $var2)'
+		 * ```php
+		 * 		array('mon_marqueur' => $maVariable);
+		 * 		array('marqueur1' => $var1, 'marqueur2'=> $var2);
+		 * ```
 		 *
 		 * Si vous savez que vous allez avoir un seul resultat
 		 * (par ex, un `COUNT(*)`, un `getUn...()` )
@@ -175,6 +180,7 @@ class Bdd
 		 * la methode vous retourneras directement un **objet**
 		 *
 		 * La requete prend donc ces formes :
+		 * ```php
 		 * 		$sql  = 'SELECT * FROM `maTable`';
 		 * 		$data = $_SESSION['bdd']->query( $sql );
 		 *
@@ -200,17 +206,22 @@ class Bdd
 		 * 				'nb_total'=> intval($nb_total),
 		 * 				)
 		 * 			);
+		 * ```
 		 *
 		 * *Attention, pour les `LIMIT` il faut forcer la variable en integer, via `intval()`*
 		 *
-		 * On recupere les valeurs en utilisent le nom de la colonne dans la table (ou l'alias via `AS mon_alias`)
+		 * On recupère les valeurs en utilisent le **nom de la colonne** dans la table (ou l'alias via `AS mon_alias`)
 		 * - Dans le cas du `Bdd::SINGLE_RES`, on a directement un **objet** dans data :
+		 * ```php
 		 * 		echo $data->tab_colonne_1;
 		 * 		echo $data->mon_alias;
+		 * ```
 		 * - Sinon il faut faire une boucle dans le tableau (**array**) :
+		 * ```php
 		 * 		foreach($data as $unObjet){
 		 * 			echo $unObjet->tab_colonne_2;
 		 * 		}
+		 * ```
 		 *
 		 * @api
 		 *
@@ -275,10 +286,13 @@ class Bdd
 		 *
 		 * On lui donne les arguments dans un tableau.
 		 * L'array doit etre associatif `marqueur => valeur`
-		 * 		ex : 'array('mon_marqueur' => $codeTable)'
-		 * 		ex : 'array('marqueur1' => $clause1, 'marqueur2'=>$clause2)'
+		 * ```php
+		 * 		array('mon_marqueur' => $codeTable);
+		 * 		array('marqueur1' => $clause1, 'marqueur2'=>$clause2);
+		 * ```
 		 *
 		 * La requete prend donc ces formes :
+		 * ```php
 		 * 		$sql  = 'DELETE FROM `table` WHERE `tab_connexion` < 6';
 		 * 		$data = $_SESSION['bdd']->exec( $sql );
 		 *
@@ -294,6 +308,7 @@ class Bdd
 		 * 				'valeur2'=> $val2,
 		 * 				)
 		 * 			);
+		 * ```
 		 *
 		 * retourne le nombre de ligne affectee
 		 *
@@ -306,7 +321,7 @@ class Bdd
 	public function exec($sql, array $arg = null)
 	{
 		try {
-				// on regarde si on a des variable en arguments
+				// on regarde si on a des variables en arguments
 			if(!empty($arg))
 			{
 					// on prepare la requete SQL
@@ -319,7 +334,7 @@ class Bdd
 					else
 						$req->bindParam($key, $value, PDO::PARAM_STR);
 				}
-					// on evite les bug lie a la reference
+					// on evite les bug lie à la reference
 				unset($value);
 
 					// on l'execute
