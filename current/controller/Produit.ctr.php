@@ -34,12 +34,20 @@ class Produit
 		$this->odbProduit = new OdbProduit();
 
 			// le titre de la page par defaut (html <title>)
-		$_SESSION['tampon']['html']['title'] = 'Produit';
+		$_SESSION['tampon']['html']['title'] = 'Tous les produits';
 			// le menu actuel dans la list des menu
 		$_SESSION['tampon']['menu'][0]['current'] = 'Produit';
 
 			//les sous menu
-		$_SESSION['tampon']['menu'][1]['current'] = 'Afficher les produits';
+		//$_SESSION['tampon']['menu'][1]['current'] = 'Afficher les produits';
+		
+		//$_SESSION['tampon']['menu'][1]['current'] = 'trhjtj';
+
+			//test
+		$_SESSION['tampon']['menu'][1]['list'] = 
+			array('Afficher tous les produits'=>'index.php?page=produit&amp;action=lesproduits',
+				  'Ajouter un produit'=>'index.php?page=produit&amp;action=ajouterunproduit',
+				  );
 
 
 			// on evite les erreurs en cas de non action
@@ -55,6 +63,10 @@ class Produit
 		switch ($_GET['action']) {
 			case 'unproduit':
 				$this->afficherUnProduit();
+				break;
+
+			case 'ajouterunproduit':
+				$this->ajouterUnProduit();
 				break;
 
 			case 'lesproduits';
@@ -74,8 +86,8 @@ class Produit
 	{
 		$lesProduits = $this->odbProduit->getLesProduits();
 
-		$_SESSION['tampon']['html']['title'] = 'Tous les produits';
-		$_SESSION['tampon'][1]['curent'] = 'Les produits';
+		$_SESSION['tampon']['html']['title'] = 'Tous les produits';  //ce qui s'affiche dans le title html lorsqu'on clique sur "Tous les produits"
+		$_SESSION['tampon']['menu'][1]['current'] = 'Les produits';
 
 		if (empty($lesProduits))
 			$_SESSION['tampon']['error'][] = 'Pas de produits';
@@ -89,6 +101,11 @@ class Produit
 		view('contentMenu');
 		view('contentAllProduits', array('lesProduits'=>$lesProduits));
 		view('htmlFooter');
+	}
+
+	protected function ajouterUnProduit()
+	{
+
 	}
 
 }

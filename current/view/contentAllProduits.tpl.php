@@ -24,12 +24,12 @@
 							</a> <!-- la redirection n'est pas encore faire pour UN PRODUIT -->
 						</td>
 						<td><?php echo $value->PRO_NOM;?></td>
-						<td><?php echo $value->PRO_NOM;?></td>
-						<td><?php echo $value->PRO_POIDS;?></td>
+						<td><?php echo $value->PRO_PRIX;?> €</td>
+						<td><?php echo $value->PRO_POIDS;?> Kg</td>
 						<td><?php echo $value->PRO_DATE;?></td>
 						<td>
 							<a href="index.php?page=fournisseur&amp;action=unfournisseur&amp;valeur=<?php echo $value->FOU_ID;?>">
-								<?php echo $value->FOU_NOM;?>
+								<?php echo $value->FOU_RAISONSOC;?>
 							</a> <!-- la redirection n'est pas encore faire pour UN FOURNISSEUR -->
 						</td>
 					</tr>
