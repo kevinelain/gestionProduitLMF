@@ -11,6 +11,7 @@ class Produit
 {
 		/** @var OdbProduit model de gestion Produit en Bdd */
 	private $odbProduit;
+	private $odbFournisseur;
 		/**
 		 * constructeur de la class
 		 *
@@ -32,6 +33,7 @@ class Produit
 			// si il est connecte
 			// on instancie les model (lien avec la BDD)
 		$this->odbProduit = new OdbProduit();
+		$this->odbFournisseur = new OdbFournisseur();
 
 			// le titre de la page par defaut (html <title>)
 		$_SESSION['tampon']['html']['title'] = 'Tous les produits';
@@ -87,7 +89,10 @@ class Produit
 		$lesProduits = $this->odbProduit->getLesProduits();
 
 		$_SESSION['tampon']['html']['title'] = 'Tous les produits';  //ce qui s'affiche dans le title html lorsqu'on clique sur "Tous les produits"
-		$_SESSION['tampon']['menu'][1]['current'] = 'Les produits';
+		$_SESSION['tampon']['title'] = 'Tous les produits';
+
+		$_SESSION['tampon']['menu'][1]['current'] = 'Afficher tous les produits';
+		$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=station&amp;action=lesproduits';
 
 		if (empty($lesProduits))
 			$_SESSION['tampon']['error'][] = 'Pas de produits';
@@ -105,6 +110,46 @@ class Produit
 
 	protected function ajouterUnProduit()
 	{
+		/**
+		 * si l'envoi est effectué depuis la page d'ajout produit, on enregistre le produit dans la BDD
+		 */
+		if(isset($_POST['sbmtMkProduit']))
+		{
+			$unNouveauProduit = $this->odbProduit->creerUnProduit();
+
+			//si tout ok alors
+			if ($unNouveauProduit)
+			{
+				$_SESSION['tampon']['success'][] =
+					'Enregistrement du nouveau produit r&eacute;ussi';
+					// on redirige vers la page d'affiche des produits
+				header('Location:index.php?page=produit&action=lesproduits');
+				die; // on stop le chargement de la page
+			}
+			else // sinon on charge une erreur
+				$_SESSION['tampon']['error'][] = 'Erreur durant l&apos;enregistrement du nouveau produit';
+
+		}
+
+		$lesProduits = $this->odbProduit->getLesProduits();
+		$lesFournisseurs = $this->odbFournisseur->getLesFournisseurs();
+
+		$_SESSION['tampon']['html']['title'] = 'Ajouter un produit';
+		$_SESSION['tampon']['title'] = 'Ajouter un produit';
+
+		$_SESSION['tampon']['menu'][1]['current'] = 'Ajouter un produit';
+		$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=station&amp;action=ajouterunproduit';
+
+		/**
+		 * load des vues
+		 */
+		view('htmlHeader');
+		view('contentMenu');
+		view('creerProduit', array(
+			'lesProduits'=>$lesProduits,
+			'lesFournisseurs'=>$lesFournisseurs,
+			));
+		view('htmlFooter');
 
 	}
 
