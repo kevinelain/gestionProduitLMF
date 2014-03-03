@@ -49,6 +49,7 @@ class Produit
 		$_SESSION['tampon']['menu'][1]['list'] = 
 			array('Afficher tous les produits'=>'index.php?page=produit&amp;action=lesproduits',
 				  'Ajouter un produit'=>'index.php?page=produit&amp;action=ajouterunproduit',
+				  'Rechercher un produit'=>'index.php?page=produit&amp;action=rechercherunproduit',
 				  );
 
 
@@ -69,6 +70,10 @@ class Produit
 
 			case 'ajouterunproduit':
 				$this->ajouterUnProduit();
+				break;
+
+			case 'rechercherunproduit':
+				$this->rechercherUnProduit();
 				break;
 
 			case 'lesproduits';
@@ -92,7 +97,7 @@ class Produit
 		$_SESSION['tampon']['title'] = 'Tous les produits';
 
 		$_SESSION['tampon']['menu'][1]['current'] = 'Afficher tous les produits';
-		$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=station&amp;action=lesproduits';
+		//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=produit&amp;action=lesproduits';
 
 		if (empty($lesProduits))
 			$_SESSION['tampon']['error'][] = 'Pas de produits';
@@ -138,7 +143,7 @@ class Produit
 		$_SESSION['tampon']['title'] = 'Ajouter un produit';
 
 		$_SESSION['tampon']['menu'][1]['current'] = 'Ajouter un produit';
-		$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=station&amp;action=ajouterunproduit';
+		//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=produit&amp;action=ajouterunproduit';
 
 		/**
 		 * load des vues
@@ -151,6 +156,31 @@ class Produit
 			));
 		view('htmlFooter');
 
+	}
+
+	protected function rechercherUnProduit()
+	{
+		if(isset($_GET['valeur']) and $_GET['valeur'] !== '')
+			$lesProduits = $this->odbProduit->searchProduits($_GET['valeur']);
+		else
+			$lesProduits = $this->odbProduit->getLesProduits();
+
+		$_SESSION['tampon']['html']['title'] = 'Rechercher un produit';
+		$_SESSION['tampon']['title'] = 'Rechercher un produit';
+
+		$_SESSION['tampon']['menu'][1]['current'] = 'Rechercher un produit';
+
+		if (empty($lesProduits))
+			$_SESSION['tampon']['error'][] = 'Pas de produit...';
+
+			/**
+			 * Load des vues
+			 */
+		view('htmlHeader');
+		view('contentMenu');
+		view('contentSearchProduit');
+		view('contentAllProduits', array('lesProduits'=>$lesProduits));
+		view('htmlFooter');
 	}
 
 }

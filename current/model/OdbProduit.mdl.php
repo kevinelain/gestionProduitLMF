@@ -29,7 +29,8 @@ class odbProduit{
 		$req = 'SELECT *
 				FROM
 				PRODUIT, FOURNISSEUR
-				WHERE PRO_FOU = FOU_ID';
+				WHERE PRO_FOU = FOU_ID
+				ORDER BY PRO_DATE DESC';
 
 		$lesProduits = $this->oBdd->query($req);
 
@@ -76,5 +77,28 @@ class odbProduit{
 				 'fourProd'=>$_POST['fourProduit'],
 				));
 		return $out;
+	}
+	/**
+	 * permet de faire une recherche de produit
+	 * @param  [type] $valeur prend la valeur du nom produit,
+	 *                        nom du fournisseur etc
+	 *                        format recherche date: AAA-MM-JJ
+	 * @return [type]         [description]
+	 */
+	public function searchProduits($valeur)
+	{
+		$req = "SELECT *
+				FROM `PRODUIT`, `FOURNISSEUR`
+				WHERE `PRO_FOU` = `FOU_ID`
+					AND `PRO_REF` LIKE :valeur
+					OR `PRO_NOM` LIKE :valeur
+					OR `FOU_RAISONSOC` LIKE :valeur
+					OR `PRO_DATE` LIKE :valeur
+				ORDER BY PRO_DATE DESC";
+
+		$lesProduits = $this->oBdd->query($req, array('valeur'=>'%'.$valeur.'%'));
+
+		return $lesProduits;
+
 	}
 }
