@@ -42,6 +42,7 @@ class Fournisseur
 		$_SESSION['tampon']['menu'][1]['list'] =
 			array('Afficher tous les fournisseurs'=>'index.php?page=fournisseur&amp;action=lesfournisseurs',
 				  'Ajouter un fournisseur'=>'index.php?page=fournisseur&amp;action=ajouterunfournisseur',
+				  'Rechercher un fournisseur'=>'index.php?page=fournisseur&amp;action=rechercherunfournisseur',
 				  );
 
 
@@ -62,6 +63,10 @@ class Fournisseur
 
 			case 'ajouterunfournisseur':
 				$this->ajouterUnFournisseur();
+				break;
+
+			case 'rechercherunfournisseur':
+				$this->rechercherUnFournisseur();
 				break;
 
 			case 'lesfournisseurs';
@@ -129,7 +134,7 @@ class Fournisseur
 		$_SESSION['tampon']['title'] = 'Ajouter un fournisseur';
 
 		$_SESSION['tampon']['menu'][1]['current'] = 'Ajouter un fournisseur';
-		//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=fournisseur&amp;action=ajouterunproduit';
+		//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=fournisseur&amp;action=ajouterunfournisseur';
 
 		/**
 		 * load des vues
@@ -141,6 +146,31 @@ class Fournisseur
 			));
 		view('htmlFooter');
 
+	}
+
+	protected function rechercherUnFournisseur()
+	{
+		if(isset($_GET['valeur']) and $_GET['valeur'] !== '')
+			$lesFournisseurs = $this->odbFournisseur->searchFournisseurs($_GET['valeur']);
+		else
+			$lesFournisseurs = $this->odbFournisseur->getLesFournisseurs();
+
+		$_SESSION['tampon']['html']['title'] = 'Rechercher un fournisseur';
+		$_SESSION['tampon']['title'] = 'Rechercher un fournisseur';
+
+		$_SESSION['tampon']['menu'][1]['current'] = 'Rechercher un fournisseur';
+
+		if (empty($lesFournisseurs))
+			$_SESSION['tampon']['error'][] = 'Pas de fournisseur...';
+
+			/**
+			 * Load des vues
+			 */
+		view('htmlHeader');
+		view('contentMenu');
+		view('contentSearchFournisseur');
+		view('contentAllFournisseurs', array('lesFournisseurs'=>$lesFournisseurs));
+		view('htmlFooter');
 	}
 
 }

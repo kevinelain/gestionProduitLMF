@@ -77,4 +77,25 @@ class odbFournisseur{
 				));
 		return $out;
 	}
+
+	/**
+	 * permet de faire une recherche de fournisseur
+	 * @param  [type] $valeur prend la valeur du nom fournisseur,
+	 *                        nom du fournisseur, siret...
+	 * @return [type]         [description]
+	 */
+	public function searchFournisseurs($valeur)
+	{
+		$req = "SELECT *
+				FROM `FOURNISSEUR`
+				WHERE `FOU_RAISONSOC` LIKE :valeur
+					OR `FOU_SIRET` LIKE :valeur
+					OR `FOU_VILLE` LIKE :valeur
+					OR `FOU_TELEPHONE` LIKE :valeur";
+
+		$lesFournisseurs = $this->oBdd->query($req, array('valeur'=>'%'.$valeur.'%'));
+
+		return $lesFournisseurs;
+
+	}
 }
