@@ -78,6 +78,7 @@ class odbProduit{
 				));
 		return $out;
 	}
+	
 	/**
 	 * permet de faire une recherche de produit
 	 * @param  [type] $valeur prend la valeur du nom produit,

@@ -34,4 +34,47 @@ class odbFournisseur{
 
 		return $lesFournisseurs;
 	}
+
+	public function creerUnFournisseur()
+	{
+		$req = 'SELECT MAX(FOU_ID) + 1 AS MAXID
+		     	FROM FOURNISSEUR';
+		$iFouId = $this->oBdd->query($req, array(), Bdd::SINGLE_RES);
+
+		//echo $iFouId->MAXID;
+		//die();
+
+		$req = 'INSERT INTO FOURNISSEUR (
+					 `FOU_ID`,
+					 `FOU_RAISONSOC`,
+					 `FOU_SIRET`,
+					 `FOU_TELEPHONE`,
+					 `FOU_NUMERORUE`,
+					 `FOU_NOMRUE`,
+					 `FOU_COPOS`,
+					 `FOU_VILLE`
+					)
+				VALUES (
+					 :idFou,
+					 :raisonSocFou,
+					 :siretFou,
+					 :telephoneFou,
+					 :numeroRueFou,
+					 :nomRueFou,
+					 :coposFou,
+					 :villeFou
+					 )';
+
+		$out = $this->oBdd->exec($req, array(
+				 'idFou'=>$iFouId->MAXID,
+				 'raisonSocFou'=>$_POST['raisonSocFou'],
+				 'siretFou'=>$_POST['siretFou'],
+				 'telephoneFou'=>$_POST['telephoneFou'],
+				 'numeroRueFou'=>$_POST['numeroRueFou'],
+				 'nomRueFou'=>$_POST['nomRueFou'],
+				 'coposFou'=>$_POST['coposFou'],
+				 'villeFou'=>$_POST['villeFou'],
+				));
+		return $out;
+	}
 }
