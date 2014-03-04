@@ -32,6 +32,7 @@ class Fournisseur
 			// si il est connecte
 			// on instancie les model (lien avec la BDD)
 		$this->odbFournisseur = new OdbFournisseur();
+		$this->odbProduit = new OdbProduit();
 
 			// le titre de la page par defaut (html <title>)
 		$_SESSION['tampon']['html']['title'] = 'Fournisseur';
@@ -43,6 +44,7 @@ class Fournisseur
 			array('Afficher tous les fournisseurs'=>'index.php?page=fournisseur&amp;action=lesfournisseurs',
 				  'Ajouter un fournisseur'=>'index.php?page=fournisseur&amp;action=ajouterunfournisseur',
 				  'Rechercher un fournisseur'=>'index.php?page=fournisseur&amp;action=rechercherunfournisseur',
+				  'Un fournisseur'=>'index.php?page=fournisseur&amp;action=unfournisseur',
 				  );
 
 
@@ -103,6 +105,50 @@ class Fournisseur
 		view('contentMenu');
 		view('contentAllFournisseurs', array('lesFournisseurs'=>$lesFournisseurs));
 		view('htmlFooter');
+	}
+
+	protected function afficherUnFournisseur()
+	{
+			// si on a bien a faire a un fournisseur valide
+		if (
+				!empty($_GET['valeur'])
+				and $this->odbFournisseur->estType($_GET['valeur']))
+		{
+			$unFournisseur = $this->odbFournisseur->getUnFournisseur($_GET['valeur']);
+			$lesProduitsByFournisseur = $this->odbProduit->getLesProduitsDeFournisseur($_GET['valeur']);
+
+			$_SESSION['tampon']['html']['title'] = $unFournisseur->FOU_RAISONSOC;
+
+			$_SESSION['tampon']['menu'][1]['current'] = 'Un fournisseur';
+
+			if (empty($lesProduitsByFournisseur))
+				$_SESSION['tampon']['error'][] = 'Pas de produits pour ce fournisseur...';
+
+				/**
+				 * Load des vues
+				 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentOneFournisseur', array('unFournisseur'=>$unFournisseur,
+				'lesProduits'=>$lesProduitsByFournisseur));
+			view('htmlFooter');
+		}
+		elseif(!empty($_GET['valeur']))
+		{
+			$_SESSION['tampon']['html']['title'] = 'Fournisseur - ERREUR';
+			$_SESSION['tampon']['menu'][1]['current'] = 'Un fournisseur';
+			$_SESSION['tampon']['error'][] = 'Le fournisseur ne semble pas exister...';
+
+				/**
+				 * Load des vues
+				 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentError');
+			view('htmlFooter');
+		}
+		else
+			$this->rechercherUnFournisseur();
 	}
 
 	protected function ajouterUnFournisseur()

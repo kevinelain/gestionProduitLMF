@@ -22,7 +22,7 @@
 						<td>
 							<a href="index.php?page=fournisseur&amp;action=unfournisseur&amp;valeur=<?php echo $value->FOU_ID;?>">
 								<?php echo $value->FOU_RAISONSOC;?>
-							</a> <!-- @todo la redirection n'est pas encore faire pour UN FOURNISSEUR -->
+							</a>
 						</td>
 						<td><?php echo $value->FOU_SIRET;?></td>
 						<td><?php echo $value->FOU_TELEPHONE;?></td>

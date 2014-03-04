@@ -35,6 +35,17 @@ class odbFournisseur{
 		return $lesFournisseurs;
 	}
 
+	public function getUnFournisseur($codeFournisseur){
+		$req = 'SELECT *
+				FROM PRODUIT, FOURNISSEUR
+				WHERE PRO_ID = :codeFournisseur
+					AND PRO_FOU = FOU_ID';
+
+		$leProduit = $this->oBdd->query($req, array('codeFournisseur'=>$codeFournisseur), Bdd::SINGLE_RES);
+
+		return $leProduit;
+	}
+
 	public function creerUnFournisseur()
 	{
 		$req = 'SELECT MAX(FOU_ID) + 1 AS MAXID

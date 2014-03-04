@@ -48,6 +48,18 @@ class odbProduit{
 		return $leProduit;
 	}
 
+	public function getLesProduitsDeFournisseur($codeFournisseur){
+
+		$req = 'SELECT *
+				FROM PRODUIT, FOURNISSEUR
+				WHERE FOU_ID = :codeFournisseur
+					AND PRO_FOU = FOU_ID';
+
+		$lesProduits = $this->oBdd->query($req, array('codeFournisseur'=>$codeFournisseur));
+
+		return $lesProduits;
+	}
+
 	public function creerUnProduit()
 	{
 		$req = 'SELECT MAX(PRO_ID) + 1 AS MAXID
