@@ -50,6 +50,7 @@ class Produit
 			array('Afficher tous les produits'=>'index.php?page=produit&amp;action=lesproduits',
 				  'Ajouter un produit'=>'index.php?page=produit&amp;action=ajouterunproduit',
 				  'Rechercher un produit'=>'index.php?page=produit&amp;action=rechercherunproduit',
+				  'Un produit'=>'index.php?page=produit&amp;action=unproduit',
 				  );
 
 
@@ -111,6 +112,45 @@ class Produit
 		view('contentMenu');
 		view('contentAllProduits', array('lesProduits'=>$lesProduits));
 		view('htmlFooter');
+	}
+
+	protected function afficherUnProduit()
+	{
+			// si on a bien a faire a un produit valide
+		if (
+				!empty($_GET['valeur'])
+				and $this->odbProduit->estType($_GET['valeur']))
+		{
+			$unProduit = $this->odbProduit->getUnProduit($_GET['valeur']);
+
+			$_SESSION['tampon']['html']['title'] = $unProduit->PRO_NOM;
+
+			$_SESSION['tampon']['menu'][1]['current'] = 'Un produit';
+
+			/**
+			 * Load des vues
+			 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentOneProduit', array('unProduit'=>$unProduit));
+			view('htmlFooter');
+		}
+		elseif(!empty($_GET['valeur']))
+		{
+			$_SESSION['tampon']['html']['title'] = 'Produit - ERREUR';
+			$_SESSION['tampon']['menu'][1]['current'] = 'Un produit';
+			$_SESSION['tampon']['error'][] = 'Le produit ne semble pas exister...';
+
+				/**
+				 * Load des vues
+				 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentError');
+			view('htmlFooter');
+		}
+		else
+			$this->rechercherUnProduit();
 	}
 
 	protected function ajouterUnProduit()

@@ -37,6 +37,17 @@ class odbProduit{
 		return $lesProduits;
 	}
 
+	public function getUnProduit($codeProduit){
+		$req = 'SELECT *
+				FROM PRODUIT, FOURNISSEUR
+				WHERE PRO_ID = :codeProduit
+					AND PRO_FOU = FOU_ID';
+
+		$leProduit = $this->oBdd->query($req, array('codeProduit'=>$codeProduit), Bdd::SINGLE_RES);
+
+		return $leProduit;
+	}
+
 	public function creerUnProduit()
 	{
 		$req = 'SELECT MAX(PRO_ID) + 1 AS MAXID
