@@ -52,8 +52,6 @@ body {
   border-top-right-radius: 0;
 }
 
-
-
 #footer{
   text-align: center;
 }
@@ -64,9 +62,4 @@ body {
 
 .form-group label{
   padding-left: 2%;
-}
-
-.supprimer .btn-primary{
-  background-color: #FF1010;
-  border-color: #FF1229;
 }

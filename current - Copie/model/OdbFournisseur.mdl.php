@@ -13,7 +13,7 @@ class odbFournisseur{
 		if(!empty($id))
 		{
 			$req = 'SELECT COUNT(*) AS nb
-					FROM PRODUITS_FOURNISSEUR
+					FROM FOURNISSEUR
 					WHERE FOU_ID = :id';
 
 			$data = $this->oBdd->query($req , array('id'=>$id), Bdd::SINGLE_RES);
@@ -28,7 +28,7 @@ class odbFournisseur{
 	{
 		$req = 'SELECT *
 				FROM
-				PRODUITS_FOURNISSEUR';
+				FOURNISSEUR';
 
 		$lesFournisseurs = $this->oBdd->query($req);
 
@@ -37,7 +37,7 @@ class odbFournisseur{
 
 	public function getUnFournisseur($codeFournisseur){
 		$req = 'SELECT *
-				FROM PRODUITS_FOURNISSEUR
+				FROM FOURNISSEUR
 				WHERE FOU_ID = :codeFournisseur';
 
 		$leFournisseur = $this->oBdd->query($req, array('codeFournisseur'=>$codeFournisseur), Bdd::SINGLE_RES);
@@ -48,13 +48,13 @@ class odbFournisseur{
 	public function creerUnFournisseur()
 	{
 		$req = 'SELECT MAX(FOU_ID) + 1 AS MAXID
-		     	FROM PRODUITS_FOURNISSEUR';
+		     	FROM FOURNISSEUR';
 		$iFouId = $this->oBdd->query($req, array(), Bdd::SINGLE_RES);
 
 		//echo $iFouId->MAXID;
 		//die();
 
-		$req = 'INSERT INTO PRODUITS_FOURNISSEUR (
+		$req = 'INSERT INTO FOURNISSEUR (
 					 `FOU_ID`,
 					 `FOU_RAISONSOC`,
 					 `FOU_SIRET`,
@@ -97,7 +97,7 @@ class odbFournisseur{
 	public function searchFournisseurs($valeur)
 	{
 		$req = "SELECT *
-				FROM `PRODUITS_FOURNISSEUR`
+				FROM `FOURNISSEUR`
 				WHERE `FOU_RAISONSOC` LIKE :valeur
 					OR `FOU_SIRET` LIKE :valeur
 					OR `FOU_VILLE` LIKE :valeur

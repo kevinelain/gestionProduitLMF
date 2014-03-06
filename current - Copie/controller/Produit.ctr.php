@@ -82,10 +82,6 @@ class Produit
 				$this->rechercherUnProduit();
 				break;
 
-			case 'supprimerunproduit':
-				$this->supprimerUnProduit();
-				break;
-
 			case 'lesproduits';
 
 			default:
@@ -276,8 +272,9 @@ class Produit
 			$lesFournisseurs = $this->odbFournisseur->getLesFournisseurs();
 
 
-			$_SESSION['tampon']['html']['title'] = 'Modifier un produit';
-			$_SESSION['tampon']['menu'][1]['current'] = 'Modifier un produit';
+			$_SESSION['tampon']['html']['title'] = 'Modifier un V&eacute;lo';
+			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=modifierproduit';
+			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Modifier v&eacute;lo';
 
 				/** en cas de retour vide sur une des valeurs */
 			if (empty($lesFournisseurs))
@@ -296,68 +293,10 @@ class Produit
 		}
 		else
 		{
-			/*
+
 			$_SESSION['tampon']['html']['title'] = 'Modifier un produit - ERREUR';
 			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=modifierunproduit';
 			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Modifier produit';
-
-			$_SESSION['tampon']['error'][] = 'Le produit ne semble pas exister...'; */
-
-			$lesProduits = $this->odbProduit->getLesProduits();
-
-			$_SESSION['tampon']['html']['title'] = 'Tous les produits';  //ce qui s'affiche dans le title html lorsqu'on clique sur "Tous les produits"
-			$_SESSION['tampon']['title'] = 'Tous les produits';
-
-			$_SESSION['tampon']['menu'][1]['current'] = 'Afficher tous les produits';
-			//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=produit&amp;action=lesproduits';
-
-			if (empty($lesProduits))
-				$_SESSION['tampon']['error'][] = 'Pas de produits';
-				/**
-				 * Load des vues
-				 */
-			view('htmlHeader');
-			view('contentMenu');
-			view('contentAllProduits', array('lesProduits'=>$lesProduits));
-			view('htmlFooter');
-		}
-	}
-
-	protected function supprimerUnProduit()
-	{
-
-		/**
-			 * Si le produit existe, on peut lancer le module
-			 * sinon on passe directement a une erreur
-			 */
-		if(
-			isset($_GET['valeur'])
-			and $this->odbProduit->estType($_GET['valeur'])
-			)
-		{
-
-			echo "eoifzioefoiejf";
-				// on lance la modif
-			$outSupprimerProduit = $this->odbProduit->supprimerUnProduit($_GET['valeur']);
-				/** si on a un nombre de ligne >0 et donc TRUE */
-			if ($outSupprimerProduit)
-			{
-				$_SESSION['tampon']['success'][] =
-					'Suppression du produit r&eacute;ussie !';
-					// on redirige vers la page de tous les produits
-				header('Location:index.php?page=produit&action=lesproduits');
-				die; // on stop le chargement de la page
-			}
-			else // sinon on charge une erreur
-				$_SESSION['tampon']['error'][] = 'Erreur avec la modification du produit';
-
-		}
-		else
-		{
-
-			$_SESSION['tampon']['html']['title'] = 'Supprimer produit - ERREUR';
-			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=supprimerunproduit';
-			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Supprimer un produit';
 
 			$_SESSION['tampon']['error'][] = 'Le produit ne semble pas exister...';
 
@@ -369,8 +308,6 @@ class Produit
 			view('contentError');
 			view('htmlFooter');
 		}
-
-
 	}
 
 }

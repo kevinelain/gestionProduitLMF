@@ -1,0 +1,1 @@
+// fonction JS perso

@@ -13,7 +13,7 @@ class odbProduit{
 		if(!empty($id))
 		{
 			$req = 'SELECT COUNT(*) AS nb
-					FROM PRODUITS_PRODUIT
+					FROM PRODUIT
 					WHERE PRO_ID = :id';
 
 			$data = $this->oBdd->query($req , array('id'=>$id), Bdd::SINGLE_RES);
@@ -28,7 +28,7 @@ class odbProduit{
 	{
 		$req = 'SELECT *
 				FROM
-				PRODUITS_PRODUIT, PRODUITS_FOURNISSEUR
+				PRODUIT, FOURNISSEUR
 				WHERE PRO_FOU = FOU_ID
 				ORDER BY PRO_DATE DESC';
 
@@ -39,7 +39,7 @@ class odbProduit{
 
 	public function getUnProduit($codeProduit){
 		$req = 'SELECT *
-				FROM PRODUITS_PRODUIT, PRODUITS_FOURNISSEUR
+				FROM PRODUIT, FOURNISSEUR
 				WHERE PRO_ID = :codeProduit
 					AND PRO_FOU = FOU_ID';
 
@@ -51,7 +51,7 @@ class odbProduit{
 	public function getLesProduitsDeFournisseur($codeFournisseur){
 
 		$req = 'SELECT *
-				FROM PRODUITS_PRODUIT, PRODUITS_FOURNISSEUR
+				FROM PRODUIT, FOURNISSEUR
 				WHERE FOU_ID = :codeFournisseur
 					AND PRO_FOU = FOU_ID';
 
@@ -63,7 +63,7 @@ class odbProduit{
 	public function creerUnProduit()
 	{
 		$req = 'SELECT MAX(PRO_ID) + 1 AS MAXID
-		     	FROM PRODUITS_PRODUIT';
+		     	FROM PRODUIT';
 		$iProId = $this->oBdd->query($req, array(), Bdd::SINGLE_RES);
 
 		//echo $iProId->MAXID;
@@ -71,7 +71,7 @@ class odbProduit{
 		//echo $_POST['fourProduit'];
 		//die();
 
-		$req = 'INSERT INTO PRODUITS_PRODUIT (
+		$req = 'INSERT INTO PRODUIT (
 					 `PRO_ID`,
 					 `PRO_REF`,
 					 `PRO_NOM`,
@@ -112,7 +112,7 @@ class odbProduit{
 	public function searchProduits($valeur)
 	{
 		$req = "SELECT *
-				FROM `PRODUITS_PRODUIT`, `PRODUITS_FOURNISSEUR`
+				FROM `PRODUIT`, `FOURNISSEUR`
 				WHERE `PRO_FOU` = `FOU_ID`
 					AND `PRO_REF` LIKE :valeur
 					OR `PRO_NOM` LIKE :valeur
@@ -134,7 +134,7 @@ class odbProduit{
 
 		
 		
-		$req = 'UPDATE `PRODUITS_PRODUIT`
+		$req = 'UPDATE `PRODUIT`
 				SET `PRO_REF`     	= :referenceProduit,
 					`PRO_NOM`       	= :nomProduit,
 					`PRO_PRIX`  		= :prixProduit,
@@ -153,16 +153,6 @@ class odbProduit{
 				'codeProduit'    		=>(int)$_POST['codeProduit'],
 				));
 
-
-		return $out;
-	}
-
-	public function supprimerUnProduit($codeProduit){
-
-		$req = 'DELETE FROM `PRODUITS_PRODUIT`
-				WHERE `PRO_ID` = :codeProduit';
-
-		$out = $this->oBdd->exec($req, array('codeProduit'=>$codeProduit));
 
 		return $out;
 	}

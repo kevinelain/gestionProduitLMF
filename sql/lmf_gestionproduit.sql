@@ -19,8 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données: `lmf_gestionproduit`
 --
-CREATE DATABASE IF NOT EXISTS `lmf_gestionproduit` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `lmf_gestionproduit`;
+-- CREATE DATABASE IF NOT EXISTS `lmf_gestionproduit` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+-- USE `lmf_gestionproduit`;
 
 -- --------------------------------------------------------
 
@@ -28,7 +28,7 @@ USE `lmf_gestionproduit`;
 -- Structure de la table `fournisseur`
 --
 
-CREATE TABLE IF NOT EXISTS `fournisseur` (
+CREATE TABLE IF NOT EXISTS `produits_fournisseur` (
   `FOU_ID` int(10) NOT NULL,
   `FOU_RAISONSOC` varchar(30) NOT NULL,
   `FOU_SIRET` varchar(14) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `fournisseur` (
 -- Contenu de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`FOU_ID`, `FOU_RAISONSOC`, `FOU_SIRET`, `FOU_TELEPHONE`, `FOU_NUMERORUE`, `FOU_NOMRUE`, `FOU_COPOS`, `FOU_VILLE`) VALUES
+INSERT INTO `produits_fournisseur` (`FOU_ID`, `FOU_RAISONSOC`, `FOU_SIRET`, `FOU_TELEPHONE`, `FOU_NUMERORUE`, `FOU_NOMRUE`, `FOU_COPOS`, `FOU_VILLE`) VALUES
 (1, 'La Ferme Monsieur Seguin', '39982698100017', '231641929', 12, 'Rue de la Campagne', '56000', 'Kermadek'),
 (2, 'Intermarché', '52147896321020', '231645050', 50, 'Route de Rouen', '14130', 'Pont L''Evêque'),
 (3, 'Bricomarché', '45210256392101', '231646869', 14, 'Place Henri Lemarcha', '14130', 'Pont L''Evêque'),
@@ -56,7 +56,7 @@ INSERT INTO `fournisseur` (`FOU_ID`, `FOU_RAISONSOC`, `FOU_SIRET`, `FOU_TELEPHON
 -- Structure de la table `produit`
 --
 
-CREATE TABLE IF NOT EXISTS `produit` (
+CREATE TABLE IF NOT EXISTS `produits_produit` (
   `PRO_ID` int(10) NOT NULL,
   `PRO_REF` varchar(20) NOT NULL,
   `PRO_NOM` varchar(50) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `produit` (
 -- Contenu de la table `produit`
 --
 
-INSERT INTO `produit` (`PRO_ID`, `PRO_REF`, `PRO_NOM`, `PRO_PRIX`, `PRO_POIDS`, `PRO_DATE`, `PRO_FOU`) VALUES
+INSERT INTO `produits_produit` (`PRO_ID`, `PRO_REF`, `PRO_NOM`, `PRO_PRIX`, `PRO_POIDS`, `PRO_DATE`, `PRO_FOU`) VALUES
 (1, 'AA001', 'Farine', '12.19', '20.000', '2014-02-11', 1),
 (2, 'AA002', 'Oeuf', '8.12', '1.000', '2014-02-26', 1),
 (3, 'BB001', 'Tablette chocolat', '10.15', '14.120', '2014-02-27', 1),
@@ -88,7 +88,7 @@ INSERT INTO `produit` (`PRO_ID`, `PRO_REF`, `PRO_NOM`, `PRO_PRIX`, `PRO_POIDS`, 
 -- Structure de la table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+CREATE TABLE IF NOT EXISTS `produits_user` (
   `Use_Num` int(11) NOT NULL AUTO_INCREMENT,
   `Use_Nom` varchar(50) NOT NULL,
   `Use_Hash` char(128) NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Contenu de la table `user`
 --
 
-INSERT INTO `user` (`Use_Num`, `Use_Nom`, `Use_Hash`) VALUES
+INSERT INTO `produits_user` (`Use_Num`, `Use_Nom`, `Use_Hash`) VALUES
 (1, 'root', '6779bcb1f994927795f01178c45b345a36cdabef683618d11e85489441482dd55ad241d920b466418c5b865a4f96aa0fd1cd76a206f66e58de650bb3d16a9806');
 
 --
@@ -110,8 +110,8 @@ INSERT INTO `user` (`Use_Num`, `Use_Nom`, `Use_Hash`) VALUES
 --
 -- Contraintes pour la table `produit`
 --
-ALTER TABLE `produit`
-  ADD CONSTRAINT `FK_PRODUIT_FOURNISSEUR` FOREIGN KEY (`PRO_FOU`) REFERENCES `fournisseur` (`FOU_ID`);
+ALTER TABLE `produits_produit`
+  ADD CONSTRAINT `FK_PRODUIT_FOURNISSEUR` FOREIGN KEY (`PRO_FOU`) REFERENCES `produits_fournisseur` (`FOU_ID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

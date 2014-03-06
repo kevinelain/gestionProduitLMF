@@ -33,7 +33,6 @@
 			?>
 		</tbody>
 	</table>
-
 	<form class="form-add" role="form" action="index.php" method="GET" >
 
 		<input type="hidden" name="page" class="form-control" value="produit" required >
@@ -45,17 +44,4 @@
         <center><button type="submit" class="btn btn-lg btn-primary btn-block" >Modifier</button></center>
 	</form>
 	<br />
-	<div class="supprimer">
-		<form class="form-add" role="form" action="index.php" method="GET" >
-
-			<input type="hidden" name="page" class="form-control" value="produit" required >
-			<input type="hidden" name="action" class="form-control" value="supprimerunproduit" required >
-			<input type="hidden" name="valeur" class="form-control" <?php
-				if(!empty($arg['unProduit']))
-					echo 'value="'.$arg['unProduit']->PRO_ID.'" ';
-				?> required >
-	        <center><button type="submit" class="btn btn-lg btn-primary btn-block" >Supprimer</button></center>
-	    </form>
-	</div>
-	
 </div><!-- /.container -->

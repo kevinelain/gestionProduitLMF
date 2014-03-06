@@ -15,7 +15,7 @@ class OdbUser{
 		if(!empty($nom))
 		{
 			$req = 'SELECT COUNT(*) AS nb
-					FROM PRODUITS_USER
+					FROM USER
 					WHERE Use_Nom = :nom';
 
 			$data = $this->oBdd->query($req , array('nom'=>$nom), Bdd::SINGLE_RES);
@@ -31,7 +31,7 @@ class OdbUser{
 		if(!empty($nom))
 		{
 			$req = 'SELECT *
-					FROM PRODUITS_USER
+					FROM USER
 					WHERE Use_Nom = :nom';
 
 			$data = $this->oBdd->query($req , array('nom'=>$nom), Bdd::SINGLE_RES);
@@ -58,7 +58,7 @@ class OdbUser{
 		if(!empty($nom) and !empty($hash))
 		{
 			$req = 'SELECT COUNT(*) AS nb
-					FROM PRODUITS_USER
+					FROM USER
 					WHERE Use_Nom = :nom
 						AND Use_Hash = :hash';
 
