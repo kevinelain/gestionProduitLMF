@@ -25,7 +25,7 @@
 					<td>
 						<a href="index.php?page=fournisseur&amp;action=unfournisseur&amp;valeur=<?php echo $arg['unProduit']->PRO_FOU;?>">
 							<?php echo $arg['unProduit']->FOU_RAISONSOC;?>
-						</a> <!-- la redirection n'est pas encore faire pour UN FOURNISSEUR -->
+						</a>
 					</td>
 				</tr>
 			<?php
@@ -35,8 +35,8 @@
 	</table>
 	<form class="form-add" role="form" action="index.php" method="GET" >
 
-		<input type="hidden" name="page" class="form-control" value="velo" required >
-		<input type="hidden" name="action" class="form-control" value="modifierproduit" required >
+		<input type="hidden" name="page" class="form-control" value="produit" required >
+		<input type="hidden" name="action" class="form-control" value="modifierunproduit" required >
 		<input type="hidden" name="valeur" class="form-control" <?php
 			if(!empty($arg['unProduit']))
 				echo 'value="'.$arg['unProduit']->PRO_ID.'" ';

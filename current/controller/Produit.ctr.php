@@ -51,6 +51,7 @@ class Produit
 				  'Ajouter un produit'=>'index.php?page=produit&amp;action=ajouterunproduit',
 				  'Rechercher un produit'=>'index.php?page=produit&amp;action=rechercherunproduit',
 				  'Un produit'=>'index.php?page=produit&amp;action=unproduit',
+				  'Modifier un produit'=>'index.php?page=produit&amp;action=modifierunproduit',
 				  );
 
 
@@ -71,6 +72,10 @@ class Produit
 
 			case 'ajouterunproduit':
 				$this->ajouterUnProduit();
+				break;
+
+			case 'modifierunproduit':
+				$this->modifierUnProduit();
 				break;
 
 			case 'rechercherunproduit':
@@ -221,6 +226,88 @@ class Produit
 		view('contentSearchProduit');
 		view('contentAllProduits', array('lesProduits'=>$lesProduits));
 		view('htmlFooter');
+	}
+
+	protected function modifierUnProduit()
+	{
+
+			/**
+			 * Si le produit existe, on peut lancer le module
+			 * sinon on passe directement a une erreur
+			 */
+		if(
+			isset($_GET['valeur'])
+			and $this->odbProduit->estType($_GET['valeur'])
+			)
+		{
+				/** @var array stock les erreurs de la modification du produit */
+			$has_error = array();
+
+				/**
+				 * Si on a un envois de fomulaire sur la demande de modification de produit
+				 */
+			if (!empty($_POST))
+			{
+					// on lance la modif
+				$outModifProduit = $this->odbProduit->modifierUnProduit();
+					/** si on a un nombre de ligne >0 et donc TRUE */
+				if ($outModifProduit)
+				{
+					$_SESSION['tampon']['success'][] =
+						'Modification du produit No '.$_GET['valeur'].' r&eacute;ussie !';
+						// on redirige vers la page d'affiche d'un produit
+					header('Location:index.php?page=produit&action=unproduit&valeur='.$_GET['valeur']);
+					die; // on stop le chargement de la page
+				}
+				else // sinon on charge une erreur
+					$_SESSION['tampon']['error'][] = 'Erreur avec la modification du produit No '.$_GET['valeur'];
+			
+			}
+
+				/**
+				 * partie principal de la modif produit, on va chercher les infos du produit
+				 */
+
+			$leProduit = $this->odbProduit->getUnProduit($_GET['valeur']);
+			$lesFournisseurs = $this->odbFournisseur->getLesFournisseurs();
+
+
+			$_SESSION['tampon']['html']['title'] = 'Modifier un V&eacute;lo';
+			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=modifierproduit';
+			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Modifier v&eacute;lo';
+
+				/** en cas de retour vide sur une des valeurs */
+			if (empty($lesFournisseurs))
+				$_SESSION['tampon']['error'][] = 'Aucun fournisseur dans la base !';
+
+				/**
+				 * Load des vues
+				 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentModifierUnProduit', array(
+					'lesFournisseurs'=>$lesFournisseurs,
+					'leProduit'=>$leProduit,
+					));
+			view('htmlFooter');
+		}
+		else
+		{
+
+			$_SESSION['tampon']['html']['title'] = 'Modifier un produit - ERREUR';
+			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=modifierunproduit';
+			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Modifier produit';
+
+			$_SESSION['tampon']['error'][] = 'Le produit ne semble pas exister...';
+
+				/**
+				 * Load des vues
+				 */
+			view('htmlHeader');
+			view('contentMenu');
+			view('contentError');
+			view('htmlFooter');
+		}
 	}
 
 }

@@ -115,6 +115,7 @@ class Fournisseur
 				and $this->odbFournisseur->estType($_GET['valeur']))
 		{
 			$unFournisseur = $this->odbFournisseur->getUnFournisseur($_GET['valeur']);
+
 			$lesProduitsByFournisseur = $this->odbProduit->getLesProduitsDeFournisseur($_GET['valeur']);
 
 			$_SESSION['tampon']['html']['title'] = $unFournisseur->FOU_RAISONSOC;

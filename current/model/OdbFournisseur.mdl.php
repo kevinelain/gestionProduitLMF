@@ -37,13 +37,12 @@ class odbFournisseur{
 
 	public function getUnFournisseur($codeFournisseur){
 		$req = 'SELECT *
-				FROM PRODUIT, FOURNISSEUR
-				WHERE PRO_ID = :codeFournisseur
-					AND PRO_FOU = FOU_ID';
+				FROM FOURNISSEUR
+				WHERE FOU_ID = :codeFournisseur';
 
-		$leProduit = $this->oBdd->query($req, array('codeFournisseur'=>$codeFournisseur), Bdd::SINGLE_RES);
+		$leFournisseur = $this->oBdd->query($req, array('codeFournisseur'=>$codeFournisseur), Bdd::SINGLE_RES);
 
-		return $leProduit;
+		return $leFournisseur;
 	}
 
 	public function creerUnFournisseur()

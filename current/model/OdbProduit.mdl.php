@@ -125,4 +125,35 @@ class odbProduit{
 		return $lesProduits;
 
 	}
+
+	/**
+	 * modifier certainens informations d'un produit
+	 * @return int                nombre de ligne affectee
+	 */
+	public function modifierUnProduit(){
+
+		
+		
+		$req = 'UPDATE `PRODUIT`
+				SET `PRO_REF`     	= :referenceProduit,
+					`PRO_NOM`       	= :nomProduit,
+					`PRO_PRIX`  		= :prixProduit,
+					`PRO_POIDS`  		= :poidsProduit,
+					`PRO_DATE`  		= :dateProduit,
+					`PRO_FOU`  		= :fournisseurProduit
+				WHERE `PRO_ID` 		= :codeProduit';
+
+		$out = $this->oBdd->exec($req, array(
+				'referenceProduit'   	=>$_POST['referenceProduit'],
+				'nomProduit'       		=>$_POST['nomProduit'],
+				'prixProduit' 			=>floatval($_POST['prixProduit']),
+				'poidsProduit'       	=>floatval($_POST['poidsProduit']),
+				'dateProduit'       	=>$_POST['dateProduit'],
+				'fournisseurProduit'    =>(int)$_POST['fournisseurProduit'],
+				'codeProduit'    		=>(int)$_POST['codeProduit'],
+				));
+
+
+		return $out;
+	}
 }

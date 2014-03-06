@@ -18,11 +18,7 @@
 			{
 				?>
 				<tr>
-					<td>
-						<a href="index.php?page=fournisseur&amp;action=unfournisseur&amp;valeur=<?php echo $arg['unFournisseur']->FOU_ID;?>">
-							<?php echo $arg['unFournisseur']->FOU_RAISONSOC;?>
-						</a>
-					</td>
+					<td><?php echo $arg['unFournisseur']->FOU_RAISONSOC;?></td>
 					<td><?php echo $arg['unFournisseur']->FOU_SIRET;?></td>
 					<td><?php echo $arg['unFournisseur']->FOU_TELEPHONE;?></td>
 					<td><?php echo $arg['unFournisseur']->FOU_NUMERORUE;?></td>
