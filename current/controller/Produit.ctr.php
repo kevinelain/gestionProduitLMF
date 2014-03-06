@@ -294,22 +294,15 @@ class Produit
 					));
 			view('htmlFooter');
 		}
-		else
+		else //si pas de produit préséléctionnés mais clique direct dans menu, alors on affiche simplement tous les produits
 		{
-			/*
-			$_SESSION['tampon']['html']['title'] = 'Modifier un produit - ERREUR';
-			$_SESSION['tampon']['sous_menu']['curent']['url'] = 'index.php?page=produit&amp;action=modifierunproduit';
-			$_SESSION['tampon']['sous_menu']['curent']['title'] = 'Modifier produit';
-
-			$_SESSION['tampon']['error'][] = 'Le produit ne semble pas exister...'; */
 
 			$lesProduits = $this->odbProduit->getLesProduits();
 
-			$_SESSION['tampon']['html']['title'] = 'Tous les produits';  //ce qui s'affiche dans le title html lorsqu'on clique sur "Tous les produits"
+			$_SESSION['tampon']['html']['title'] = 'Tous les produits';
 			$_SESSION['tampon']['title'] = 'Tous les produits';
 
 			$_SESSION['tampon']['menu'][1]['current'] = 'Afficher tous les produits';
-			//$_SESSION['tampon']['menu'][1]['url'] = 'index.php?page=produit&amp;action=lesproduits';
 
 			if (empty($lesProduits))
 				$_SESSION['tampon']['error'][] = 'Pas de produits';
